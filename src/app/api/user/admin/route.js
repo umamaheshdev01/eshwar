@@ -10,21 +10,21 @@ const supabase = createClient(
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { roll_no, password } = body
+    const { admin_id, password } = body
 
-    if (!roll_no || !password) {
+    if (!admin_id || !password) {
       return NextResponse.json(
-        { error: 'Roll number and password are required' },
+        { error: 'Admin ID and password are required' },
         { status: 400 }
       )
     }
 
-    // Query the user table
+    // Query the admin table
     const { data, error } = await supabase
-      .from('User')
+      .from('Admin')
       .select('*')
-      .eq('roll_no', roll_no)
-      .eq('password', password) // Add direct password comparison in query
+      .eq('admin_id', admin_id)
+      .eq('password', password)
       .single()
 
     if (error) {
@@ -34,15 +34,15 @@ export async function POST(request) {
 
     if (!data) {
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { error: 'Invalid admin credentials' },
         { status: 401 }
       )
     }
 
     // If we get here, credentials are valid
     return NextResponse.json({
-      message: 'Login successful',
-      user: data
+      message: 'Admin login successful',
+      admin: data
     })
 
   } catch (error) {
