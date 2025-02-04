@@ -29,14 +29,14 @@ export async function POST(request) {
 
     if (error) {
       console.error('Database error:', error)
+      // Handle the specific case of no matching records
+      if (error.code === 'PGRST116') {
+        return NextResponse.json(
+          { error: 'Invalid admin credentials' },
+          { status: 401 }
+        )
+      }
       return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    if (!data) {
-      return NextResponse.json(
-        { error: 'Invalid admin credentials' },
-        { status: 401 }
-      )
     }
 
     // If we get here, credentials are valid
