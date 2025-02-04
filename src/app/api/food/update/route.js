@@ -20,7 +20,7 @@ export async function PATCH(request) {
     const { data, error } = await supabase
       .from('Item')
       .update(body)
-      .eq('item_id', item_id)
+      .eq('id', item_id)
       .select()
       .single()
 
